@@ -8,6 +8,7 @@ lines = file.readlines()
 digits_and_dots = ['0','1','2','3','4','5','6','7','8','9', '.']
 indices = []
 numbers = []
+sum = 0
 for i, line in enumerate(lines):
     numbers_in_line = re.findall('[0-9]+', line)
     for number in numbers_in_line:
@@ -25,7 +26,7 @@ symbol_indices = []
 for i, line in enumerate(lines):
     line = line.strip()
     for j, char in enumerate(line):
-        if char not in digits_and_dots and char is not None:
+        if char == '*':
             symbol_indices.append([i,j])
 
 print(indices)
@@ -34,36 +35,20 @@ print(symbol_indices)
 in_range = [-1, 0, 1]
 good_dots = []
 
-for en, dots in enumerate(indices):
-    print('******************************************')
-    bad_dot = True
-    break_dots = False
-    for dot in dots:
-        if break_dots is True:
-            break
-        #print(dot[0], dot[1])
-        
-        for symbol in symbol_indices:
+for symbol in symbol_indices:
+    multiply_this = []
+    for en, dots in enumerate(indices):   
+        for dot in dots:
+            #print(dot[0], dot[1])
             diff_row = dot[0] - symbol[0]
             diff_column = dot[1] - symbol[1]
-            print(dot, 'dot')
-            print(symbol, 'symbol')
-            print(diff_row, diff_column, 'diff')
             if diff_row in in_range and diff_column in in_range:
-                bad_dot = False
-                good_dots.append(numbers[en])
-                break_dots = True
+                multiply_this.append(int(numbers[en]))
                 break
-                print('good')
-            else:
-                print('bad')
-            print('>>>>>>>>')
 
-    print('-----')
 
-sum = 0
-print(numbers)
-for number in good_dots:
-    sum = sum + int(number)
+    if len(multiply_this) == 2:
+        sum = sum + (multiply_this[0] * multiply_this[1])
+    print('-----', multiply_this)
 
 print(sum)
